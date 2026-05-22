@@ -128,10 +128,17 @@ def find_arbitrage(pp_line, dk_line, direction='over'):
     
     # <--- Ensure there is a blank line here
     def find_arbitrage(pp_line, dk_line, direction='over'):
-
-    If PP is at 23.5 and DK is at 25.5:
-    Over on PP at 23.5 is massive value.
+def find_arbitrage(pp_line, dk_line, direction='over'):
+"""  <-- This is the problem! It's not indented.
+    def find_arbitrage(pp_line, dk_line, direction='over'):
     """
+    This is your docstring. It must be indented by 4 spaces.
+    """
+    diff = abs(pp_line - dk_line)
+    if diff >= 2.0:
+        return True, diff
+    return False, 0
+
     diff = abs(pp_line - dk_line)
     if diff >= 2.0: # Threshold for 'Strong Arbitrage'
         return True, diff
