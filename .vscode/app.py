@@ -149,16 +149,16 @@ import math
 return False, 0
 
 def get_implied_prob(american_odds):
-    """Converts American odds to implied probability."""
+    Converts American odds to implied probability.
     if american_odds > 0:
         return 100 / (american_odds + 100)
     else:
         return abs(american_odds) / (abs(american_odds) + 100)
 
 def calculate_clv(my_odds, closing_odds):
-    """
+  \
     Positive CLV means you beat the closing line (Market moved in your favor).
-    """
+   
     my_prob = get_implied_prob(my_odds)
     close_prob = get_implied_prob(closing_odds)
     
@@ -170,9 +170,9 @@ def calculate_clv(my_odds, closing_odds):
 # st.write(f"Your CLV Edge: {clv:.2f}%")import streamlit as st
 
 def check_downswing_protection(current_bankroll, initial_bankroll, max_drawdown_pct=0.10):
-    """
+   
     If bankroll drops by 10% (default), trigger protection.
-    """
+   
     drawdown = (initial_bankroll - current_bankroll) / initial_bankroll
     
     if drawdown >= max_drawdown_pct:
