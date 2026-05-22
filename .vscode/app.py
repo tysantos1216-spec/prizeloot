@@ -112,8 +112,13 @@ else:
 # 3. Correlation Warning
 if st.button("Check Lineup Correlation"):
     is_correlated, msg = analytics.check_correlation(player1, player2)
-    if is_correlated:
-        st.error(msg)def find_arbitrage(pp_line, dk_line, direction='over'):
+    if is_correlated:      
+         if is_correlated:
+        st.error(msg) 
+    
+    # <--- Ensure there is a blank line here
+    def find_arbitrage(pp_line, dk_line, direction='over'):
+        # Your function code continues here...
     """
     If PP is at 23.5 and DK is at 25.5:
     Over on PP at 23.5 is massive value.
