@@ -1,0 +1,70 @@
+import pandas as pd
+import sqlite3
+from datetime import datetime, timedelta
+
+def get_weekly_summary(db_path="bets.db"):
+    conn = sqlite3.connect(db_path)
+    # Load all bets
+    df = pd.read_sql("SELECT * FROM bets", conn)
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    
+    # Filter for last 7 days
+    one_week_ago = datetime.now() - timedelta(days=7)
+    weekly_df = df[df['timestamp'] >= one_week_ago]
+    
+    # Calculate performance
+    summary = {
+        "Total Bets": len(weekly_df),
+        "Win Rate": (weekly_df['result'] == 'win').mean(),
+        "Net Profit": weekly_df['profit'].sum()
+    }
+    return summary
+    import logging
+
+# Configure logging: Logs to a file, not the screen
+logging.basicConfig(
+    filename='app_errors.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+def safe_run_bet(bet_data):
+    try:
+        # Your betting logic here
+        pass
+    except Exception as e:
+        logging.error(f"Failed to process bet {bet_data}: {str(e)}")
+        return "Error logged. Check app_errors.log"{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Streamlit",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "args": ["run", "app.py"],
+            "console": "integratedTerminal"
+        }
+    ]
+}import streamlit as st
+
+sport = st.sidebar.radio("Select Sport", ["NBA", "Soccer"])
+
+if sport == "NBA":
+    st.markdown("### 🏀 NBA Dashboard")
+    # Use green/gold or team-specific accents
+    st.success("NBA Mode Active") 
+elif sport == "Soccer":
+    st.markdown("### ⚽ Soccer Dashboard")
+    # Use green/white or team-specific accents
+    st.info("Soccer Mode Active")
+    def set_theme(primary_color, bg_color):
+    st.markdown(f"""
+        <style>
+            .stApp {{ background-color: {bg_color}; }}
+            div.stButton > button {{ background-color: {primary_color}; color: white; }}
+        </style>
+    """, unsafe_allow_html=True)
+
+if sport == "NBA":
+    set_theme("#1DB954", "#0E1117") # Green/Dark
