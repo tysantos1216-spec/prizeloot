@@ -1,0 +1,53 @@
+import streamlit as st
+
+@st.cache_data(ttl=900) # 15 minutes
+def get_historical_lines():
+    # In a production app, save these to a local JSON/SQLite file
+    return {"LeBron": 24.5} 
+
+def detect_line_movement(current_df, history_dict):
+    alerts = []
+    for index, row in current_df.iterrows():
+        player = row['player_name']
+        curr_line = row['line_score']
+        if player in history_dict and history_dict[player] != curr_line:
+            alerts.append(f"🔥 {player} moved from {history_dict[player]} to {curr_line}")
+    return alerts
+
+    def find_arbitrage(pp_line, dk_line, direction='over'):
+    """
+    If PP is at 23.5 and DK is at 25.5:
+    Over on PP at 23.5 is massive value.
+    """
+    diff = abs(pp_line - dk_line)
+    if diff >= 2.0: # Threshold for 'Strong Arbitrage'
+        return True, diff
+    return False, 0
+    import streamlit as st
+import analytics
+import tracker
+
+st.title("🚀 Pro AI Betting Dashboard")
+
+# 1. Show Line Movement
+st.subheader("Market Shifts (Last 15m)")
+movements = tracker.detect_line_movement(current_data, cached_history)
+for move in movements:
+    st.warning(move)
+
+# 2. EV Calculator in the UI
+st.subheader("EV Calculator")
+prob = st.slider("AI Predicted Win %", 0.0, 1.0, 0.55)
+payout = st.number_input("Payout Multiplier", value=2.0)
+ev = analytics.calculate_ev(prob, payout)
+
+if ev > 0:
+    st.success(f"✅ Positive EV: {ev:.2f}")
+else:
+    st.error(f"❌ Negative EV: {ev:.2f} (STAY AWAY)")
+
+# 3. Correlation Warning
+if st.button("Check Lineup Correlation"):
+    is_correlated, msg = analytics.check_correlation(player1, player2)
+    if is_correlated:
+        st.error(msg)
