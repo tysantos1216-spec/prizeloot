@@ -115,7 +115,6 @@ if st.button("Check Lineup Correlation"):
     if is_correlated:      
          if is_correlated:
       
-                        ^
 IndentationError: unindent does not match any outer indentation level
 
     
