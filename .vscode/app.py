@@ -112,13 +112,18 @@ else:
 # 3. Correlation Warning
 if st.button("Check Lineup Correlation"):
     is_correlated, msg = analytics.check_correlation(player1, player2)
-    if is_correlated:      
-         if is_correlated: File "/mount/src/prizeloot/.vscode/app.py", line 118
-  IndentationError: unindent does not match any outer indentation level
-  ^
-IndentationError: expected an indented block after 'if' statement on line 116
-      
-IndentationError: unindent does not match any outer indentation level
+    # Ensure this block is indented inside your button or logic flow
+    if is_correlated:
+        st.error(msg)
+    else:
+        st.success("No major correlations found.")
+
+# The function definition MUST be back at the far-left margin (0 indentation)
+def find_arbitrage(pp_line, dk_line, direction='over'):
+    diff = abs(pp_line - dk_line)
+    if diff >= 2.0:
+        return True, diff
+    return False, 0
 
     
     # <--- Ensure there is a blank line here
