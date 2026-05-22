@@ -114,7 +114,11 @@ if st.button("Check Lineup Correlation"):
     is_correlated, msg = analytics.check_correlation(player1, player2)
     if is_correlated:      
          if is_correlated:
-        st.error(msg) 
+       File "/mount/src/prizeloot/.vscode/app.py", line 117
+          st.error(msg)
+                        ^
+IndentationError: unindent does not match any outer indentation level
+
     
     # <--- Ensure there is a blank line here
     def find_arbitrage(pp_line, dk_line, direction='over'):
