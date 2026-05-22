@@ -128,8 +128,7 @@ def find_arbitrage(pp_line, dk_line, direction='over'):
     
     # <--- Ensure there is a blank line here
     def find_arbitrage(pp_line, dk_line, direction='over'):
-        # Your function code continues here...
-    """
+
     If PP is at 23.5 and DK is at 25.5:
     Over on PP at 23.5 is massive value.
     """
