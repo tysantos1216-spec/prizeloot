@@ -1,3 +1,8 @@
+streamlit
+pandas
+requests
+apify-client
+plotly
 import streamlit as st
 import pandas as pd
 import requests
@@ -59,7 +64,7 @@ with tab2:
 with tab3:
     st.header("Mathematical Breakdown")
     st.latex(r"P(X > L) = 1 - \Phi\left(\frac{L - \mu}{\sigma}\right)")
-    st.write("Our AI uses **Bayesian Inference** and **Z-Score analysis** to find players currently trending above their career and L10 (Last 10) averages.") 
+    st.write("Our AI uses **Bayesian Inference** and **Z-Score analysis** to find players currently trending above their career and L10 (Last 10) averages.")
     import pandas as pd
 
 def calculate_ev(prob_win, payout_decimal):
@@ -81,3 +86,91 @@ def check_correlation(player1, player2):
     if player1['team'] == player2['team']:
         return True, f"⚠️ Risk: {player1['name']} & {player2['name']} are teammates."
     return False, None
+    import streamlit as st
+import analytics
+import tracker
+
+st.title("🚀 Pro AI Betting Dashboard")
+
+# 1. Show Line Movement
+st.subheader("Market Shifts (Last 15m)")
+movements = tracker.detect_line_movement(current_data, cached_history)
+for move in movements:
+    st.warning(move)
+
+# 2. EV Calculator in the UI
+st.subheader("EV Calculator")
+prob = st.slider("AI Predicted Win %", 0.0, 1.0, 0.55)
+payout = st.number_input("Payout Multiplier", value=2.0)
+ev = analytics.calculate_ev(prob, payout)
+
+if ev > 0:
+    st.success(f"✅ Positive EV: {ev:.2f}")
+else:
+    st.error(f"❌ Negative EV: {ev:.2f} (STAY AWAY)")
+
+# 3. Correlation Warning
+if st.button("Check Lineup Correlation"):
+    is_correlated, msg = analytics.check_correlation(player1, player2)
+    if is_correlated:
+        st.error(msg)def find_arbitrage(pp_line, dk_line, direction='over'):
+    """
+    If PP is at 23.5 and DK is at 25.5:
+    Over on PP at 23.5 is massive value.
+    """
+    diff = abs(pp_line - dk_line)
+    if diff >= 2.0: # Threshold for 'Strong Arbitrage'
+        return True, diff
+    return False, 0import math
+
+def get_implied_prob(american_odds):
+    """Converts American odds to implied probability."""
+    if american_odds > 0:
+        return 100 / (american_odds + 100)
+    else:
+        return abs(american_odds) / (abs(american_odds) + 100)
+
+def calculate_clv(my_odds, closing_odds):
+    """
+    Positive CLV means you beat the closing line (Market moved in your favor).
+    """
+    my_prob = get_implied_prob(my_odds)
+    close_prob = get_implied_prob(closing_odds)
+    
+    # The 'Edge' gained by betting early
+    return (close_prob - my_prob) * 100 
+
+# Example: Bet -110, closing line -130
+# clv = calculate_clv(-110, -130)
+# st.write(f"Your CLV Edge: {clv:.2f}%")import streamlit as st
+
+def check_downswing_protection(current_bankroll, initial_bankroll, max_drawdown_pct=0.10):
+    """
+    If bankroll drops by 10% (default), trigger protection.
+    """
+    drawdown = (initial_bankroll - current_bankroll) / initial_bankroll
+    
+    if drawdown >= max_drawdown_pct:
+        st.error("🚨 DOWNSWING PROTECTION ACTIVE: Trading/Betting Halted for 24 Hours.")
+        return False
+    return True
+
+# Implementation in your main app loop:
+# if not check_downswing_protection(st.session_state.balance, 1000):
+#     st.stop()from nba_api.stats.endpoints import commonteamroster
+from nba_api.stats.static import teams
+
+# 1. Get a team ID
+nba_teams = teams.get_teams()
+# Find the Celtics (or any team) by abbreviation
+celtics = [t for t in nba_teams if t['abbreviation'] == 'BOS'][0]
+team_id = celtics['id']
+
+# 2. Pull the live roster
+roster_data = commonteamroster.CommonTeamRoster(team_id=team_id)
+roster_df = roster_data.get_data_frames()[0]
+
+# 3. Save to your SQLite database
+import sqlite3
+conn = sqlite3.connect('nba_betting.db')
+roster_df.to_sql('rosters', conn, if_exists='replace', index=False)
