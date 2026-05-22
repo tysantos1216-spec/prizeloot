@@ -121,7 +121,11 @@ if st.button("Check Lineup Correlation"):
     diff = abs(pp_line - dk_line)
     if diff >= 2.0: # Threshold for 'Strong Arbitrage'
         return True, diff
-    return False, 0import math
+# Move the import to the top of your file if possible
+import math
+
+# Then in your function:
+return False, 0
 
 def get_implied_prob(american_odds):
     """Converts American odds to implied probability."""
